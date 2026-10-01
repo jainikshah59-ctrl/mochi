@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ff8fb3">
+<meta name="description" content="Mochi — make your photos adorable. Cute stickers, filters, frames and daily photo challenges.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mochi">
+<title>Mochi — Cute Photo Studio</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='28' fill='%23ff8fb3'/%3E%3Cpath d='M50 78C34 66 24 54 24 42c0-9 7-16 15-16 6 0 8 3 11 7 3-4 5-7 11-7 8 0 15 7 15 16 0 12-10 24-26 36z' fill='white'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- SPLASH -->
+  <section class="screen active" id="screen-splash">
+    <div class="splash-inner">
+      <img class="splash-logo" src="assets/logo.png" alt="Mochi" onerror="this.style.display='none'">
+      <div class="splash-name display">Mochi</div>
+      <div class="splash-tag">Cute Photo Studio</div>
+      <div class="loader-dots"><span></span><span></span><span></span></div>
+    </div>
+  </section>
+
+  <!-- ONBOARDING -->
+  <section class="screen" id="screen-onboard">
+    <div class="ob-card clay-card">
+      <img class="ob-logo" src="assets/logo.png" alt="Mochi" onerror="this.style.display='none'">
+      <h1>Hey cutie!</h1>
+      <p>What should we call you?</p>
+      <input class="ob-input" id="ob-name" maxlength="20" placeholder="Your name" autocomplete="off">
+      <div class="ob-label">Pick your vibe color</div>
+      <div id="ob-colors"></div>
+      <button class="clay-btn" id="ob-start" style="width:100%">Start creating</button>
+    </div>
+  </section>
+
+  <!-- HOME -->
+  <section class="screen" id="screen-home">
+    <div class="hi-row">
+      <div>
+        <h1 class="display" id="home-hi">Hi Cutie!</h1>
+      </div>
+      <img class="mini-logo" src="assets/logo.png" alt="Mochi" onerror="this.style.display='none'">
+    </div>
+
+    <div class="challenge-card">
+      <span class="ic" data-icon="sparkle"></span>
+      <div style="flex:1">
+        <b id="home-challenge-tag">Today's challenge</b>
+        <p id="home-challenge-prompt"></p>
+        <button class="challenge-go" id="home-challenge-go">Try it</button>
+      </div>
+    </div>
+
+    <div class="create-row">
+      <button class="clay-btn create-btn" id="btn-upload"><span class="ic" data-icon="image"></span>New photo</button>
+      <button class="clay-btn ghost create-btn" id="btn-camera"><span class="ic" data-icon="camera"></span>Take selfie</button>
+    </div>
+
+    <div class="sec-head"><h3>Cute templates</h3></div>
+    <div id="home-templates"></div>
+
+    <div class="sec-head">
+      <h3>Recent cuteness</h3>
+      <button class="link-btn" data-nav="gallery">See all <span data-icon="chevron"></span></button>
+    </div>
+    <div id="home-recent"></div>
+
+    <div class="sec-head"><h3>&nbsp;</h3></div>
+    <button class="pro-badge" style="width:100%;justify-content:center;padding:16px;font-size:15px"></button>
+  </section>
+
+  <!-- STUDIO -->
+  <section class="screen" id="screen-studio">
+    <div class="studio-top">
+      <button class="icon-btn" id="st-back" aria-label="Back"><span class="ic" data-icon="back"></span></button>
+      <h2 class="display">Studio</h2>
+      <button class="icon-btn" id="st-save" aria-label="Save"><span class="ic" data-icon="heart"></span></button>
+      <button class="icon-btn" id="st-share" aria-label="Share"><span class="ic" data-icon="share"></span></button>
+      <button class="icon-btn" id="st-export" aria-label="Download"><span class="ic" data-icon="download"></span></button>
+    </div>
+    <div class="canvas-wrap"><canvas id="studio-canvas"></canvas></div>
+    <div id="sticker-tools">
+      <button class="tt-btn" id="tt-del" aria-label="Delete"><span data-icon="trash"></span></button>
+      <input type="range" id="tt-size" min="0.3" max="2.5" step="0.01" value="1" aria-label="Size">
+      <input type="range" id="tt-rotate" min="-180" max="180" step="1" value="0" aria-label="Rotate">
+      <button class="tt-btn" id="tt-flip" aria-label="Flip"><span data-icon="flip"></span></button>
+      <button class="tt-btn" id="tt-fwd" aria-label="Bring forward"><span data-icon="layers"></span></button>
+      <button class="tt-btn" id="tt-done" aria-label="Done"><span data-icon="check"></span></button>
+    </div>
+
+    <div class="studio-tools">
+      <div class="tool-tabs">
+        <button class="tool-tab sel" data-tab="photo"><span data-icon="image"></span>Photo</button>
+        <button class="tool-tab" data-tab="filters"><span data-icon="wand"></span>Filters</button>
+        <button class="tool-tab" data-tab="stickers"><span data-icon="smile"></span>Stickers</button>
+        <button class="tool-tab" data-tab="frames"><span data-icon="frame"></span>Frames</button>
+        <button class="tool-tab" data-tab="text"><span data-icon="text"></span>Text</button>
+      </div>
+
+      <div class="tool-panel sel" id="panel-photo">
+        <div class="panel-row">
+          <span class="panel-label">Photo</span>
+          <button class="clay-btn ghost" id="ph-upload" style="padding:12px 20px;font-size:14px"><span class="ic" data-icon="plus"></span>Change</button>
+        </div>
+        <div class="panel-row">
+          <span class="panel-label">Zoom</span>
+          <input type="range" class="clay-range" id="ph-zoom" min="1" max="3" step="0.01" value="1" style="flex:1">
+        </div>
+        <div class="panel-row"><span class="panel-label">Try a sample</span><div id="ph-samples"></div></div>
+      </div>
+
+      <div class="tool-panel" id="panel-filters"></div>
+
+      <div class="tool-panel" id="panel-stickers">
+        <div class="pack-tabs" id="stk-packs"></div>
+        <div id="stk-grid"></div>
+      </div>
+
+      <div class="tool-panel" id="panel-frames"></div>
+
+      <div class="tool-panel" id="panel-text">
+        <div class="panel-row"><input class="tx-input" id="tx-input" maxlength="24" placeholder="Write something cute…"></div>
+        <div class="panel-row"><span class="panel-label">Color</span><div id="tx-colors"></div></div>
+        <div class="panel-row"><span class="panel-label">Size</span><input type="range" class="clay-range" id="tx-size" min="36" max="110" step="2" value="64" style="flex:1"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="screen" id="screen-gallery">
+    <div class="topbar">
+      <button class="icon-btn" id="gal-back" aria-label="Back"><span class="ic" data-icon="back"></span></button>
+      <h2 class="display">My cuteness</h2>
+      <button class="icon-btn" id="gal-new" aria-label="New"><span class="ic" data-icon="plus"></span></button>
+    </div>
+    <div id="gallery-grid"></div>
+  </section>
+
+  <!-- VIEW -->
+  <section class="screen" id="screen-view">
+    <div class="topbar">
+      <button class="icon-btn" id="view-back" aria-label="Back"><span class="ic" data-icon="back"></span></button>
+      <h2 class="display">Your creation</h2>
+      <span style="width:46px"></span>
+    </div>
+    <div class="view-frame"><img id="view-img" alt="creation"></div>
+    <div class="view-actions">
+      <button class="clay-btn" id="view-share"><span class="ic" data-icon="share"></span>Share</button>
+      <button class="clay-btn ghost" id="view-del"><span class="ic" data-icon="trash"></span>Delete</button>
+    </div>
+  </section>
+
+  <!-- PRO -->
+  <section class="screen" id="screen-pro">
+    <div class="topbar">
+      <button class="icon-btn" data-nav="home" aria-label="Back"><span class="ic" data-icon="back"></span></button>
+      <h2 class="display">Mochi Pro</h2>
+      <span style="width:46px"></span>
+    </div>
+    <div class="pro-hero">
+      <div class="pro-crown"><span data-icon="crown"></span></div>
+      <h1>Unlock all the cute</h1>
+      <p>Monthly or yearly. No auto-renewal — renew only if you love it.</p>
+    </div>
+    <div id="pro-feats"></div>
+    <div id="pro-plans"></div>
+    <div class="pro-buy-row" id="pro-buy-row">
+      <button class="clay-btn" id="pro-buy" style="flex:1"><span class="ic" data-icon="crown"></span><span id="pro-buy-label">Get Mochi Pro</span></button>
+    </div>
+    <div id="pro-owned" style="display:none">
+      <div class="pro-status-card">
+        <span class="pf-ic" data-icon="crown"></span>
+        <div><b id="pro-owned-title">You're Pro!</b><p id="pro-owned-sub"></p></div>
+      </div>
+      <button class="clay-btn ghost" id="pro-renew" style="width:100%"><span class="ic" data-icon="sparkle"></span>Renew or change plan</button>
+      <button class="clay-btn" style="width:100%;margin-top:10px" data-nav="home"><span class="ic" data-icon="check"></span>Start creating</button>
+    </div>
+    <p class="pro-note">Pay with any UPI app — GPay, PhonePe, Paytm. After paying, enter the 12-digit UTR from your UPI app to activate Pro on this device.</p>
+  </section>
+
+  <!-- PAY -->
+  <section class="screen" id="screen-pay">
+    <div class="topbar">
+      <button class="icon-btn" id="pay-close" aria-label="Back"><span class="ic" data-icon="back"></span></button>
+      <h2 class="display">Pay with UPI</h2>
+      <span style="width:46px"></span>
+    </div>
+    <div class="clay-card pay-card">
+      <h3>Mochi Pro — <span id="pro-price-2">₹99</span></h3>
+      <div id="pay-txn"></div>
+      <div id="pay-qr-zone"></div>
+      <div class="pay-stack">
+        <button class="clay-btn" id="pay-open-app"><span class="ic" data-icon="check"></span>Open UPI app to pay</button>
+        <div id="pay-utr-row">
+          <input id="pay-utr" inputmode="numeric" maxlength="12" placeholder="12-digit UTR">
+          <button class="clay-btn ghost" id="pay-verify">Verify</button>
+        </div>
+        <div id="pay-msg"></div>
+      </div>
+    </div>
+    <p class="pro-note">After paying in your UPI app, enter the 12-digit UTR here to unlock Pro.</p>
+  </section>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn sel" data-nav="home"><span data-icon="gallery"></span>Home</button>
+    <button class="nav-btn hero" data-nav="studio" aria-label="Create"><span data-icon="plus"></span></button>
+    <button class="nav-btn" data-nav="gallery"><span data-icon="image"></span>Gallery</button>
+    <button class="nav-btn" data-nav="pro"><span class="crown-ic" data-icon="crown"></span>Pro</button>
+  </nav>
+
+  <input type="file" id="file-input" class="hidden-input" accept="image/*">
+  <input type="file" id="camera-input" class="hidden-input" accept="image/*" capture="user">
+  <div id="toast"></div>
+</div>
+
+<script src="vendor/qrcode.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/stickers.js"></script>
+<script src="js/upi.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/app.js"></script>
+<script>
+  window.addEventListener("DOMContentLoaded", () => MOCHI.ui.init());
+</script>
+</body>
+</html>
